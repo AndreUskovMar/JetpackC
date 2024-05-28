@@ -50,10 +50,14 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-pager:0.35.1-alpha")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.35.1-alpha")
 
     implementation("androidx.core:core-ktx:1.10.1")
+    implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
