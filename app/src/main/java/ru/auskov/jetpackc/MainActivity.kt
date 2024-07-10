@@ -12,18 +12,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GreetingText("World")
+            Drawer()
         }
     }
-}
-
-@Composable
-fun GreetingText(name: String) {
-    Text(text = "Hello $name!", color = MaterialTheme.colorScheme.error)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GreetingText("Android")
 }
