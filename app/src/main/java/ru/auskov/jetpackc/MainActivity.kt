@@ -7,18 +7,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,26 +36,16 @@ class MainActivity : ComponentActivity() {
         val dataStore = DataStoreManager(this)
 
         setContent {
-            val bgColorState = remember {
-                mutableStateOf(Blue.value)
-            }
-            val fontSizeState = remember {
-                mutableIntStateOf(40)
-            }
-
-            LaunchedEffect(key1 = true) {
-                dataStore.getSettings().collect{ settings ->
-                    bgColorState.value = settings.bgColor.toULong()
-                    fontSizeState.intValue = settings.fontSize
-                }
-            }
+            val settings = dataStore
+                .getSettings()
+                .collectAsState(DataSettings())
 
             JetpackCTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(bgColorState.value)
+                    color = Color(settings.value.bgColor)
                 ) {
-                    Greeting(dataStore, fontSizeState)
+                    Greeting(dataStore, settings.value.fontSize)
                 }
             }
         }
@@ -65,7 +53,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(dataStore: DataStoreManager, fontSizeState: MutableState<Int>) {
+fun Greeting(dataStore: DataStoreManager, fontSizeState: Int) {
     val coroutine = rememberCoroutineScope()
 
     Column(
@@ -75,16 +63,17 @@ fun Greeting(dataStore: DataStoreManager, fontSizeState: MutableState<Int>) {
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize(0.5f)
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth()
                 .wrapContentSize(align = Alignment.Center)
         ) {
-            Text(text = "Some text", color = Color.White, fontSize = fontSizeState.value.sp)
+            Text(text = "Some text", color = Color.White, fontSize = fontSizeState.sp)
         }
 
         Button(onClick = {
             coroutine.launch {
                 dataStore.saveDataSettings(
-                    DataSettings(50, Red.value.toLong())
+                    DataSettings(50, Red.value)
                 )
             }
         }) {
@@ -96,7 +85,7 @@ fun Greeting(dataStore: DataStoreManager, fontSizeState: MutableState<Int>) {
         Button(onClick = {
             coroutine.launch {
                 dataStore.saveDataSettings(
-                    DataSettings(20, Green.value.toLong())
+                    DataSettings(20, Green.value)
                 )
             }
         }) {
@@ -108,7 +97,7 @@ fun Greeting(dataStore: DataStoreManager, fontSizeState: MutableState<Int>) {
         Button(onClick = {
             coroutine.launch {
                 dataStore.saveDataSettings(
-                    DataSettings(40, Blue.value.toLong())
+                    DataSettings(40, Blue.value)
                 )
             }
         }) {

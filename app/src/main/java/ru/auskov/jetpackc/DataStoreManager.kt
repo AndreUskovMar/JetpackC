@@ -16,14 +16,14 @@ class DataStoreManager(private val context: Context) {
     suspend fun saveDataSettings(settings: DataSettings) {
         context.dataStore.edit { prefs ->
             prefs[intPreferencesKey("font_size")] = settings.fontSize
-            prefs[longPreferencesKey("bg_color")] = settings.bgColor
+            prefs[longPreferencesKey("bg_color")] = settings.bgColor.toLong()
         }
     }
 
     fun getSettings() = context.dataStore.data.map { prefs ->
         return@map DataSettings(
             prefs[intPreferencesKey("font_size")] ?: 40,
-            prefs[longPreferencesKey("bg_color")] ?: Blue.value.toLong()
+            prefs[longPreferencesKey("bg_color")]?.toULong() ?: Blue.value
         )
     }
 }
