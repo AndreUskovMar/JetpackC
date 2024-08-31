@@ -33,7 +33,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dataStore = DataStoreManager(this)
+        // val dataStore = DataStoreManager(this)
+        val dataStore = ProtoDataStoreManager(this)
 
         setContent {
             val settings = dataStore
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(dataStore: DataStoreManager, fontSizeState: Int) {
+fun Greeting(dataStore: ProtoDataStoreManager, fontSizeState: Int) {
     val coroutine = rememberCoroutineScope()
 
     Column(
